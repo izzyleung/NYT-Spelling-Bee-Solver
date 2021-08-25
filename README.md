@@ -19,7 +19,7 @@ YAFF
 
 # Requirements
 - Some *nix system that has `/usr/local/dict/words`
-- Clang
+- Clang/GCC
 - Clang-Format (optional, install with `brew install clang-format` on macOS)
 
 # Explanation
