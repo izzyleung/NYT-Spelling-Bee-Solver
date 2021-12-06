@@ -7,7 +7,7 @@ Reads words from `/usr/share/dict/words` and find all matching words for the Spe
 # Usage
 ```sh
 $ # ./solver [-f words_file_path] <puzzle_letters_starting_with_center_letter>
-$ ./solver FMYINAR
+$ ./solver FAIMNRY
 AFAR
 ...
 INFIRM
@@ -33,7 +33,7 @@ LSB is used to represent whether 'A' exists in the word.
 For the signature of a puzzle, the above signature is adopted with one change.
 The first 6 bits are used to represent the offest of the center letter from 'A'.
 
-For example, the signature for puzzle `*F*MYINAR` is `352465185`.
+For example, the signature for puzzle `*F*AIMNRY` is `352465185`.
 And a short explanation can be found below.
 ```
 bin(352465185) == '0b00010101000000100011000100100001'
@@ -49,7 +49,7 @@ Which is the offset of 'F' from 'A'.
 
 # Output stats
 ```
-$ ./solver 'ncfiotu' | python3 stats.py
+$ ./solver 'NCFIOTU' | python3 stats.py
 WORDS: 42, POINTS: 205, PANGRAMS: 1
 
      4   5   6   7   8   9  10   Σ
