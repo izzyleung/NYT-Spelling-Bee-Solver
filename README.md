@@ -49,7 +49,7 @@ Which is the offset of 'F' from 'A'.
 
 # Output stats
 ```
-./solver 'ncfiotu' | python3 stats.py
+$ ./solver 'ncfiotu' | python3 stats.py
 WORDS: 42, POINTS: 205, PANGRAMS: 1
 
      4   5   6   7   8   9  10   Σ
