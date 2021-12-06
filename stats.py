@@ -8,7 +8,7 @@ from collections import defaultdict
 def main():
     words = [w.strip() for w in sys.stdin.readlines()]
 
-    initial_counts = defaultdict(dict)
+    initial_counts, length_counts = defaultdict(dict), {}
     points, max_word_len, num_pangrams = 0, 0, 0
 
     for word in words:
@@ -34,16 +34,18 @@ def main():
         word_initial, word_len = word[0], len(word)
         initial_info = initial_counts[word_initial]
         initial_info[word_len] = initial_info.get(word_len, 0) + 1
+        length_counts[word_len] = length_counts.get(word_len, 0) + 1
 
     # Print the stats
     print(f'WORDS: {len(words)}, POINTS: {points}, PANGRAMS: {num_pangrams}\n')
 
+    word_lengths = list(sorted(length_counts.keys()))
     # Print the table header
-    print(f"   {' '.join(str(i).rjust(3) for i in range(4, max_word_len + 1))}   Σ")
+    print(f"   {' '.join(str(i).rjust(3) for i in word_lengths)}   Σ")
     # Print the info for each letter
     for c in sorted(initial_counts.keys()):
         counts = []
-        for i in range(4, max_word_len + 1):
+        for i in word_lengths:
             counts.append(initial_counts[c].get(i, 0))
         total = sum(counts)
 
@@ -51,7 +53,7 @@ def main():
         print(f'{c}: {" ".join(cells)}   {str(total)}')
     # Print the info on each word size
     counts = []
-    for i in range(4, max_word_len + 1):
+    for i in word_lengths:
         count = 0
         for c in initial_counts.keys():
             count += initial_counts[c].get(i, 0)
