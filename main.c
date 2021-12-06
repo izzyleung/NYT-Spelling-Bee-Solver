@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #define NUM_LETTERS 26
 #define PUZZLE_CHAR_COUNT 7
@@ -127,22 +128,38 @@ bool check_arg(const char *arg) {
   return true;
 }
 
-int main(int argc, char const *argv[]) {
-  if (argc != 2) {
-    printf("Usage: %s <puzzle_letters_starting_with_center_letter>\n", argv[0]);
+int main(int argc, char *const *argv) {
+  int option;
+  char *words_file_path = "/usr/share/dict/words";
+
+  while ((option = getopt(argc, argv, "f:")) != -1) {
+    switch (option) {
+    case 'f':
+      words_file_path = optarg;
+      break;
+    default:
+      break;
+    }
+  }
+
+  if (optind != argc - 1) {
+    printf("Usage: %s [-f <words_list_path>] "
+           "<puzzle_letters_starting_with_center_letter>\n",
+           argv[0]);
     exit(EXIT_FAILURE);
   }
 
-  if (!check_arg(argv[1])) {
+  if (!check_arg(argv[optind])) {
     printf("The puzzle letters should be of size 7 and no duplicates\n");
     exit(EXIT_FAILURE);
   }
 
-  int32_t puzzle = puzzle_signature(argv[1]);
+  int32_t puzzle = puzzle_signature(argv[optind]);
 
   char line[MAX_LEN];
-  FILE *file = fopen("/usr/share/dict/words", "r");
+  FILE *file = fopen(words_file_path, "r");
   if (file == NULL) {
+    printf("Cannot open file at path: %s\n", words_file_path);
     exit(EXIT_FAILURE);
   }
 

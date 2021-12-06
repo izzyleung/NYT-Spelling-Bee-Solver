@@ -1,4 +1,4 @@
-CC = clang
+CC ?= clang
 CFLAGS = -Wall -Wextra -std=c11 -O2
 OUT = solver
 

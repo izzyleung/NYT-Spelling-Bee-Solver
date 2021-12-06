@@ -1,26 +1,27 @@
 # New York Times Spelling Bee Solver
-Reads words from `/usr/local/dict/words` and find all matching words for the Spelling Bee puzzle from the New York Times
+Reads words from `/usr/share/dict/words` and find all matching words for the Spelling Bee puzzle from the New York Times
 
 # Build
 `make main`
 
 # Usage
 ```sh
-$ # ./solver <puzzle_letters_starting_with_center_letter>
+$ # ./solver [-f words_file_path] <puzzle_letters_starting_with_center_letter>
 $ ./solver FMYINAR
 AFAR
 ...
+INFIRM
 * INFIRMARY
-INFRA
-* INFRAMAMMARY
+MAFIA
 ...
-YAFF
+RIFFRAFF
 ```
 
 # Requirements
-- Some *nix system that has `/usr/local/dict/words`
+- Some *nix system that has `/usr/share/dict/words`
 - Clang/GCC
 - Clang-Format (optional, install with `brew install clang-format` on macOS)
+- A curated list of words accepted by the Spelling Bee (optional)
 
 # Explanation
 A `int32_t` is chosen to represent the signature of a word.
@@ -44,4 +45,20 @@ The right most 26 bits represent all letters contained in the puzzle.
 
 0b000101 == 5
 Which is the offset of 'F' from 'A'.
+```
+
+# Output stats
+```
+./solver 'ncfiotu' | python3 stats.py
+WORDS: 42, POINTS: 205, PANGRAMS: 1
+
+     4   5   6   7   8   9  10   Σ
+C:   1   2   4   2   -   -   1   10
+F:   1   2   1   1   1   -   -   6
+I:   3   1   2   -   -   1   -   7
+N:   2   -   1   -   -   -   1   4
+O:   1   1   -   -   -   -   -   2
+T:   2   3   -   1   -   -   -   6
+U:   2   3   1   1   -   -   -   7
+Σ:  12  12   9   5   1   1   2   42
 ```
