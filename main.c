@@ -93,7 +93,7 @@ enum check_result check_word(const char *word, const int32_t puzzle) {
     return NOT_MATCH; // Word too short
   } else if (signature_for_word == (puzzle & PUZZLE_LETTERS_MASK)) {
     return PANGRAM;
-  } else if (check_signature(word_signature(word), puzzle)) {
+  } else if (check_signature(signature_for_word, puzzle)) {
     return MATCH;
   } else {
     return NOT_MATCH;
