@@ -50,7 +50,7 @@ Which is the offset of 'F' from 'A'.
 # Output stats
 ```
 $ ./solver 'NCFIOTU' | python3 stats.py
-WORDS: 42, POINTS: 205, PANGRAMS: 1
+WORDS: 42, POINTS: 205, PANGRAMS: 1, BINGO
 
      4   5   6   7   8   9  10   Σ
 C:   1   2   4   2   -   -   1   10

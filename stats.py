@@ -42,7 +42,7 @@ def main():
     # BINGO — All seven letters in the puzzle are used to start at least one word in the word list.
     if len(initial_counts) == 7:
         print(', BINGO', end='')
-    print('\n\n')
+    print('\n')
 
     word_lengths = list(sorted(length_counts.keys()))
     # Print the table header
