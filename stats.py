@@ -9,7 +9,7 @@ def main():
     words = [w.strip() for w in sys.stdin.readlines()]
 
     initial_counts, length_counts = defaultdict(dict), {}
-    points, max_word_len, num_pangrams = 0, 0, 0
+    points, max_word_len, num_pangrams, num_perfects = 0, 0, 0, 0
 
     for word in words:
         # It's a pangram
@@ -20,6 +20,9 @@ def main():
             points += 7
             # Increase the total amount of pangrams
             num_pangrams += 1
+            # Perfect Pangram — A pangram that uses each letter only once
+            if len(word) == 7:
+                num_perfects += 1
 
         # Update points total
         if len(word) == 4:
@@ -39,6 +42,8 @@ def main():
     # Print the stats
     print(
         f'WORDS: {len(words)}, POINTS: {points}, PANGRAMS: {num_pangrams}', end='')
+    if num_perfects > 0:
+        print(f' ({num_perfects} Perfect)', end='')
     # BINGO — All seven letters in the puzzle are used to start at least one word in the word list.
     if len(initial_counts) == 7:
         print(', BINGO', end='')
