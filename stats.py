@@ -39,15 +39,18 @@ def main():
         initial_info[word_len] = initial_info.get(word_len, 0) + 1
         length_counts[word_len] = length_counts.get(word_len, 0) + 1
 
-    # Print the stats
-    print(
-        f'WORDS: {len(words)}, POINTS: {points}, PANGRAMS: {num_pangrams}', end='')
+    puzzle_stats = ''
+    puzzle_stats += f'WORDS: {len(words)}, '
+    puzzle_stats += f'POINTS: {points}, '
+    puzzle_stats += f'PANGRAMS: {num_pangrams}'
     if num_perfects > 0:
-        print(f' ({num_perfects} Perfect)', end='')
+        puzzle_stats += f' ({num_perfects} Perfect)'
     # BINGO — All seven letters in the puzzle are used to start at least one word in the word list.
     if len(initial_counts) == 7:
-        print(', BINGO', end='')
-    print('\n')
+        puzzle_stats += ', BINGO'
+
+    # Print the stats
+    print(puzzle_stats, '\n')
 
     word_lengths = list(sorted(length_counts.keys()))
     # Print the table header
