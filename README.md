@@ -1,5 +1,7 @@
 # New York Times Spelling Bee Solver
-Reads words from `/usr/share/dict/words` and find all matching words for the Spelling Bee puzzle from the New York Times
+Reads words from `/usr/share/dict/words` or your simple one word per line file, and find all matching words for the Spelling Bee puzzle from the New York Times.
+
+With a complimentary Python program that chews on the output and spews out stats in the format from the Spelling Bee Forum.
 
 # Build
 `make main`
@@ -18,8 +20,8 @@ RIFFRAFF
 ```
 
 # Requirements
-- Some *nix system that has `/usr/share/dict/words`
 - Clang/GCC
+- Some *nix-ish system that has `/usr/share/dict/words` (optional)
 - Clang-Format (optional, install with `brew install clang-format` on macOS)
 - A curated list of words accepted by the Spelling Bee (optional)
 
@@ -49,16 +51,16 @@ Which is the offset of 'F' from 'A'.
 
 # Output stats
 ```
-$ ./solver 'NCFIOTU' | python3 stats.py
-WORDS: 42, POINTS: 205, PANGRAMS: 1, BINGO
+$ ./solver -f words 'ibgorty' | python3 stats.py
+WORDS: 21, POINTS: 68, PANGRAMS: 1 (1 Perfect), BINGO
 
-     4   5   6   7   8   9  10   Σ
-C:   1   2   4   2   -   -   1   10
-F:   1   2   1   1   1   -   -   6
-I:   3   1   2   -   -   1   -   7
-N:   2   -   1   -   -   -   1   4
-O:   1   1   -   -   -   -   -   2
-T:   2   3   -   1   -   -   -   6
-U:   2   3   1   1   -   -   -   7
-Σ:  12  12   9   5   1   1   2   42
+     4   5   6   7   Σ
+B:   2   1   -   1   4
+G:   2   1   1   -   4
+I:   1   -   -   -   1
+O:   1   1   -   -   2
+R:   2   2   1   -   5
+T:   3   1   -   -   4
+Y:   1   -   -   -   1
+Σ:  12   6   2   1   21
 ```
