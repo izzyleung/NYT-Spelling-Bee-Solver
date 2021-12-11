@@ -56,30 +56,14 @@ int32_t puzzle_signature(const char *puzzle) {
 }
 
 /*
- * Checks whether the signature of a word matches the signature of the puzzle
- */
-bool check_signature(const int32_t signature, const int32_t puzzle) {
-  // Left shift 26 times to zero out the puzzle signature first and get the
-  // center letter index Then do left shift to generate center letter signature
-  int32_t center_letter_signature = 1 << (puzzle >> NUM_LETTERS);
-
-  // Must contain center letter
-  if ((center_letter_signature & signature) != center_letter_signature) {
-    return false;
-  }
-
-  // Check for no extra letters (bits)
-  return (signature | puzzle) == puzzle;
-}
-
-/*
  * Checks wheter a word is a solution.
  *
  * It must:
  * Contain at least 4 letters (letters can be reused)
  * Include the center letter
  */
-enum check_result check_word(const char *word, const int32_t puzzle) {
+enum check_result check_word(const char *word, const int32_t puzzle,
+                             const int32_t center_letter) {
   size_t char_counts = 0;
   for (size_t i = 0; i < strnlen(word, MAX_LEN); i++) {
     // Only count letters
@@ -91,9 +75,11 @@ enum check_result check_word(const char *word, const int32_t puzzle) {
   int32_t signature_for_word = word_signature(word);
   if (char_counts < MIN_WORD_LEN) {
     return NOT_MATCH; // Word too short
-  } else if (signature_for_word == (puzzle & PUZZLE_LETTERS_MASK)) {
+  } else if ((signature_for_word & center_letter) != center_letter) {
+    return NOT_MATCH; // Does not contain center letter
+  } else if (signature_for_word == puzzle) {
     return PANGRAM;
-  } else if (check_signature(signature_for_word, puzzle)) {
+  } else if ((signature_for_word | puzzle) == puzzle) {
     return MATCH;
   } else {
     return NOT_MATCH;
@@ -155,6 +141,10 @@ int main(int argc, char *const *argv) {
   }
 
   int32_t puzzle = puzzle_signature(argv[optind]);
+  int32_t puzzle_letters = puzzle & PUZZLE_LETTERS_MASK;
+  // Left shift 26 times to zero out the puzzle signature first and get the
+  // center letter index, then left shift to generate center letter
+  int32_t center_letter = 1 << (puzzle >> NUM_LETTERS);
 
   char line[MAX_LEN];
   FILE *file = fopen(words_file_path, "r");
@@ -164,7 +154,7 @@ int main(int argc, char *const *argv) {
   }
 
   while (fgets(line, sizeof(line), file)) {
-    switch (check_word(line, puzzle)) {
+    switch (check_word(line, puzzle_letters, center_letter)) {
     case PANGRAM:
       printf("* ");
     case MATCH:
