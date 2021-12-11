@@ -63,4 +63,14 @@ R:   2   2   1   -   5
 T:   3   1   -   -   4
 Y:   1   -   -   -   1
 Σ:  12   6   2   1   21
+
+Two letter list:
+
+BI-2 BR-2
+GI-1 GR-3
+IT-1
+OB-1 OR-1
+RI-4 RO-1
+TO-2 TR-2
+YO-1
 ```

@@ -51,7 +51,7 @@ def main():
     puzzle_stats.append(pangram_stat)
     # BINGO — All seven letters in the puzzle are used to start at least one word in the word list.
     if len(initial_counts) == 7:
-        puzzle_stats.appeng('BINGO')
+        puzzle_stats.append('BINGO')
 
     # Print the stats
     print(', '.join(puzzle_stats), '\n')
@@ -88,9 +88,9 @@ def main():
         word_initial = first_two[0]
         two_letters_stats[word_initial].append(f'{first_two}-{count}')
 
-    print('Two letter list:')
+    print('Two letter list:', '\n')
     for word_initial in word_initials:
-        print(' '.join(two_letters_stats[word_initial]))
+        print(' '.join(sorted(two_letters_stats[word_initial])))
 
 
 if __name__ == '__main__':
