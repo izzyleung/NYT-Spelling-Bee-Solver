@@ -46,16 +46,6 @@ int32_t word_signature(const char *word) {
 }
 
 /*
- * Like the word signature mentioned above.
- * A `int32_t` is chosen to represent the signature of the puzzle.
- *
- * First 6 bits are used to store offsets of the center letter from 'A'.
- */
-int32_t puzzle_signature(const char *puzzle) {
-  return word_signature(puzzle) | (char_index(puzzle[0]) << NUM_LETTERS);
-}
-
-/*
  * Checks wheter a word is a solution.
  *
  * It must:
@@ -72,10 +62,12 @@ enum check_result check_word(const char *word, const int32_t puzzle,
     }
   }
 
-  int32_t signature_for_word = word_signature(word);
   if (char_counts < MIN_WORD_LEN) {
     return NOT_MATCH; // Word too short
-  } else if ((signature_for_word & center_letter) != center_letter) {
+  }
+
+  int32_t signature_for_word = word_signature(word);
+  if ((signature_for_word & center_letter) != center_letter) {
     return NOT_MATCH; // Does not contain center letter
   } else if (signature_for_word == puzzle) {
     return PANGRAM;
@@ -139,12 +131,9 @@ int main(int argc, char *const *argv) {
     printf("The puzzle letters should be of size 7 and no duplicates\n");
     exit(EXIT_FAILURE);
   }
-
-  int32_t puzzle = puzzle_signature(argv[optind]);
-  int32_t puzzle_letters = puzzle & PUZZLE_LETTERS_MASK;
-  // Left shift 26 times to zero out the puzzle signature first and get the
-  // center letter index, then left shift to generate center letter
-  int32_t center_letter = 1 << (puzzle >> NUM_LETTERS);
+  char *puzzle_letters = argv[optind];
+  int32_t puzzle = word_signature(puzzle_letters);
+  int32_t center_letter = 1 << char_index(puzzle_letters[0]);
 
   char line[MAX_LEN];
   FILE *file = fopen(words_file_path, "r");
@@ -154,7 +143,7 @@ int main(int argc, char *const *argv) {
   }
 
   while (fgets(line, sizeof(line), file)) {
-    switch (check_word(line, puzzle_letters, center_letter)) {
+    switch (check_word(line, puzzle, center_letter)) {
     case PANGRAM:
       printf("* ");
     case MATCH:
