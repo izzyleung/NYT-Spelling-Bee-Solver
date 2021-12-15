@@ -15,12 +15,9 @@
 #define PUZZLE_LETTERS_MASK (1 << NUM_LETTERS) - 1
 #define MAX_LEN 128
 
-enum check_result { NOT_MATCH, MATCH, PANGRAM };
+#define CHAR_OFFSET(letter) ((toupper(letter)) - 'A')
 
-/*
- * Offsets from the upper cased letter to 'A'
- */
-short char_index(const char letter) { return toupper(letter) - 'A'; }
+enum check_result { NOT_MATCH, MATCH, PANGRAM };
 
 /*
  * A `int32_t` is chosen to represent the signature of a word.
@@ -39,7 +36,7 @@ int32_t word_signature(const char *word) {
       continue;
     }
 
-    result |= (1 << char_index(letter));
+    result |= (1 << CHAR_OFFSET(letter));
   }
 
   return result;
@@ -93,7 +90,7 @@ bool check_arg(const char *arg) {
       return false;
     }
 
-    int32_t target = 1 << char_index(letter);
+    int32_t target = 1 << CHAR_OFFSET(letter);
 
     // Bit already set to 1, duplicate!
     if ((signature & target) == target) {
@@ -133,7 +130,7 @@ int main(int argc, char *const *argv) {
   }
   char *puzzle_letters = argv[optind];
   int32_t puzzle = word_signature(puzzle_letters);
-  int32_t center_letter = 1 << char_index(puzzle_letters[0]);
+  int32_t center_letter = 1 << CHAR_OFFSET(puzzle_letters[0]);
 
   char line[MAX_LEN];
   FILE *file = fopen(words_file_path, "r");
